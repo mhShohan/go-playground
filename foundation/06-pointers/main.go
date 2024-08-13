@@ -11,6 +11,6 @@ func main() {
 	num := 10       // num is an integer variable
 	var ptr2 = &num // &num is the address of num
 
-	fmt.Println("Value of actual pointer: ", ptr2)
+	fmt.Println("address of actual pointer: ", ptr2)
 	fmt.Println("Value of actual pointer: ", *ptr2)
 }
