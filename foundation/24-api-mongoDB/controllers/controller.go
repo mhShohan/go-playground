@@ -6,6 +6,8 @@ import (
 	"log"
 
 	"github.com/mhShohan/go-playground/tree/main/foundation/24-api-mongoDB/model"
+	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
@@ -29,6 +31,13 @@ func init() {
 	collection = client.Database(dbName).Collection(collName)
 }
 
+// CheckNil checks if the error is nil
+func checkNil(err error) {
+	if err != nil {
+		log.Fatal(err)
+	}
+}
+
 // InsertOneMovie inserts a movie into the database
 func insertOneMovie(movie model.Netflix) {
 	data, err := collection.InsertOne(context.Background(), movie)
@@ -37,8 +46,16 @@ func insertOneMovie(movie model.Netflix) {
 	fmt.Println("Inserted a single document: ", data.InsertedID)
 }
 
-func checkNil(err error) {
-	if err != nil {
-		log.Fatal(err)
-	}
+// Update one watch list
+func updateOneWatchList(movieId string) {
+	id, err := primitive.ObjectIDFromHex(movieId)
+	checkNil(err)
+
+	filter := bson.M{"_id": id}
+	update := bson.M{"$set": bson.M{"Watched": true}}
+
+	result, err := collection.UpdateOne(context.Background(), filter, update)
+	checkNil(err)
+
+	fmt.Printf("Updated %v document: ", result.ModifiedCount)
 }
