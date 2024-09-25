@@ -107,6 +107,19 @@ func printAllDivisorsOptimized(n int) {
 	// time complexity: O(sqrt(n))
 }
 
+func checkPrimeNumber(n int) {
+	isPrime := true
+
+	for i := 2; i <= int(math.Sqrt(float64(n))); i++ {
+		if n%i == 0 {
+			isPrime = false
+			break
+		}
+	}
+
+	fmt.Println(isPrime)
+}
+
 func main() {
 	countDigit(23453345)
 	countDigitOptimized(23453345)
