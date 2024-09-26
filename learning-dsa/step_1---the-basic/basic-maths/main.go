@@ -120,6 +120,49 @@ func checkPrimeNumber(n int) {
 	fmt.Println(isPrime)
 }
 
+func greatestCommonDivisor(a, b int) {
+	gcd := 1
+
+	for i := int(math.Min(float64(a), float64(b))); i >= 1; i-- {
+		if a%i == 0 && b%i == 0 {
+			gcd = i
+			break
+		}
+	}
+
+	fmt.Println("GCD:", gcd)
+}
+
+func leastCommonMultiple(a, b int) {
+	lcm := 1
+	gcd := 1
+
+	for i := int(math.Min(float64(a), float64(b))); i >= 1; i-- {
+		if a%i == 0 && b%i == 0 {
+			gcd = i
+			break
+		}
+	}
+
+	lcm = (a * b) / gcd
+
+	fmt.Println("LCM:", lcm)
+}
+
+func gcdWithEuclideanAlgorithm(a, b int) {
+	for a > 0 && b > 0 {
+		if a > b {
+			a = a % b
+		} else {
+			b = b % a
+		}
+	}
+	if a == 0 {
+		fmt.Println("GCD:", b)
+	}
+	fmt.Println("GCD:", a)
+}
+
 func main() {
 	countDigit(23453345)
 	countDigitOptimized(23453345)
@@ -132,4 +175,8 @@ func main() {
 	armstrongNumber(5434)
 	printAllDivisors(24)
 	printAllDivisorsOptimized(36)
+	checkPrimeNumber(23)
+	greatestCommonDivisor(12, 24)
+	gcdWithEuclideanAlgorithm(12, 24)
+	leastCommonMultiple(12, 13)
 }
