@@ -145,6 +145,15 @@ func isAlphanumeric(char byte) bool {
 	return false
 }
 
+// fibonacci
+func fibonacci(n int) int {
+	if n <= 1 {
+		return 1
+	}
+
+	return fibonacci(n-1) + fibonacci(n-2)
+}
+
 func main() {
 	fmt.Println(recursiveIncrement(1, 5))          // 1 2 3 4 5 (Start, End)
 	fmt.Println(recursiveDecrement(5))             // 5 4 3 2 1
@@ -154,6 +163,7 @@ func main() {
 	reverseArray()                                 // 50 40 30 20 10
 	fmt.Println(reverseString("Hello"))            // olleH
 	isPalindrome("A man, a plan, a canal: Panama") // true
+	fmt.Println("fib", fibonacci(10))              // 89
 
 	fmt.Println("Backtrack")
 	incrementBacktrack(5, 5) // 5 4 3 2 1 (Start, End)
