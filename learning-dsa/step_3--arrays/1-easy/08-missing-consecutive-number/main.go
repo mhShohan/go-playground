@@ -73,5 +73,21 @@ func findSingleNumber(arr []int) int {
 		result ^= value
 	}
 
-	return result
+	return result // 4 ^ 1 ^ 2 ^ 1 ^ 2 = 4
+}
+
+func findSingleNumberMap(arr []int) int {
+	m := make(map[int]int)
+
+	for _, value := range arr {
+		m[value]++
+	}
+
+	for key, value := range m {
+		if value == 1 {
+			return key
+		}
+	}
+
+	return -1
 }
