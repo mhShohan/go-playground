@@ -10,6 +10,7 @@ func main() {
 
 	consArr := []int{1, 1, 0, 1, 1, 1, 0, 0, 1}
 	fmt.Println("Ones", maxConsecutiveOne(consArr))
+	fmt.Println("Single", findSingleNumber([]int{4, 1, 2, 1, 2}))
 }
 
 func findMissingNumberBruteForce(arr []int) int {
@@ -61,4 +62,16 @@ func maxConsecutiveOne(arr []int) int {
 	}
 
 	return maxCount
+}
+
+// Find the number that appears once, and other numbers twice.
+// arr := []int{4, 1, 2, 1, 2}
+func findSingleNumber(arr []int) int {
+	result := 0
+
+	for _, value := range arr {
+		result ^= value
+	}
+
+	return result
 }
