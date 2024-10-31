@@ -49,9 +49,12 @@ func maxSubArrayKadane(nums []int) int {
 	maxSum := nums[0]
 	currentSum := nums[0]
 
+	// fmt.Println("Num", nums[0], "Current Sum", currentSum, "Max Sum", maxSum)
+
 	for i := 1; i < len(nums); i++ {
 		currentSum = max(nums[i], currentSum+nums[i])
 		maxSum = max(maxSum, currentSum)
+		// fmt.Println("Num", nums[i], "Current Sum", currentSum, "Max Sum", maxSum)
 	}
 
 	return maxSum
