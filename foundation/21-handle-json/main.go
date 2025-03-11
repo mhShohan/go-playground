@@ -15,9 +15,11 @@ type Course struct {
 
 func main() {
 	fmt.Println("____________Handle JSON____________")
-	// Handle JSON
-	// JSON is a popular format for data exchange between services. Go has excellent support for encoding and decoding JSON data. The encoding/json package provides functions to encode and decode JSON data.
-	// EncodeJson()
+
+	// Encode JSON
+	EncodeJson()
+
+	// Decode JSON
 	DecodeJson()
 }
 
@@ -28,57 +30,62 @@ func checkNil(err error) {
 	}
 }
 
+/*
+-----------------------------------
+Encoding JSON
+-----------------------------------
+*/
 func EncodeJson() {
 	courses := []Course{
 		{Name: "Docker Deep Dive", Price: 299, Platform: "Udemy", Password: "password", Tags: []string{"docker", "devops", "container"}},
 		{Name: "Docker Clustering", Price: 199, Platform: "Udemy", Password: "password", Tags: []string{"docker", "devops", "cluster"}},
 		{Name: "Docker and Kubernetes", Price: 199, Platform: "Udemy", Password: "password", Tags: []string{"docker", "kubernetes", "devops"}},
-		{"Docker Mastery", 299, "Youtube", "password", nil},
+		{Name: "Docker Mastery", Price: 299, Platform: "Youtube", Password: "password", Tags: nil},
 	}
 
-	// Encode JSON
-	// The json.Marshal function converts a Go value to its JSON representation. It returns a byte slice containing the JSON data.
-	// The json.MarshalIndent function formats the JSON data with indentation for better readability.
-	// The json.NewEncoder function creates an encoder that writes JSON data to an io.Writer.
+	// Encode JSON using MarshalIndent for readability
 	jsonOutput, err := json.MarshalIndent(courses, "", "   ")
 	checkNil(err)
 
+	fmt.Println("Encoded JSON Output:")
 	fmt.Println(string(jsonOutput))
-	// fmt.Printf("%s\n", jsonOutput)
 }
 
+/*
+-----------------------------------
+Decoding JSON
+-----------------------------------
+*/
 func DecodeJson() {
 	jsonData := []byte(`
 		[
 			{
-					"title": "Docker Deep Dive",
-					"price": 299,
-					"website": "Udemy",
-					"tags": [ "docker", "devops", "container" ]
+				"title": "Docker Deep Dive",
+				"price": 299,
+				"website": "Udemy",
+				"tags": [ "docker", "devops", "container" ]
 			},
 			{
-					"title": "Docker Clustering",
-					"price": 199,
-					"website": "Udemy",
-					"tags": [ "docker", "devops", "cluster" ]
+				"title": "Docker Clustering",
+				"price": 199,
+				"website": "Udemy",
+				"tags": [ "docker", "devops", "cluster" ]
 			},
 			{
-					"title": "Docker and Kubernetes",
-					"price": 199,
-					"website": "Udemy",
-					"tags": [ "docker", "kubernetes", "devops" ]
+				"title": "Docker and Kubernetes",
+				"price": 199,
+				"website": "Udemy",
+				"tags": [ "docker", "kubernetes", "devops" ]
 			},
 			{
-					"title": "Docker Mastery",
-					"price": 299,
-					"website": "Youtube"
+				"title": "Docker Mastery",
+				"price": 299,
+				"website": "Youtube"
 			}
 		]
 	`)
 
-	// Decode JSON
-	// The json.Unmarshal function converts JSON data to a Go value. It takes a byte slice containing the JSON data and a pointer to a value that will hold the decoded data.
-	// The json.NewDecoder function creates a decoder that reads JSON data from an io.Reader.
+	// Validate JSON before unmarshalling
 	var courses []Course
 	isValidJson := json.Valid(jsonData)
 
@@ -86,18 +93,41 @@ func DecodeJson() {
 		err := json.Unmarshal(jsonData, &courses)
 		checkNil(err)
 
-		fmt.Printf("%+v\n", courses) // %+v prints the field names along with the values
-		fmt.Println("----------------------------------------------------------")
-		fmt.Printf("%#v\n", courses) // %#v prints the Go syntax representation of the value
-		// fmt.Println(courses)
+		fmt.Println("Decoded JSON into Struct:")
+		fmt.Printf("%+v\n", courses) // Print field names along with values
 	} else {
 		fmt.Println("Invalid JSON")
 	}
 
-	fmt.Println("__________another way_____________________")
-	// Another way
-	var courses2 map[string]interface{}
-	err := json.Unmarshal(jsonData, &courses2)
+	fmt.Println("__________Another way to decode JSON_____________________")
+	// Decode JSON into a generic map
+	var coursesMap []map[string]interface{}
+	err := json.Unmarshal(jsonData, &coursesMap)
 	checkNil(err)
-	fmt.Printf("%#v\n", courses)
+	fmt.Println("Decoded JSON into Map:")
+	fmt.Printf("%#v\n", coursesMap)
 }
+
+/*
+Notes:
+---------
+1. **JSON Encoding in Go**:
+   - `json.Marshal()` encodes Go structs into JSON.
+   - `json.MarshalIndent()` provides formatted JSON for readability.
+   - Struct tags (`json:"name"`) allow field renaming and formatting options.
+
+2. **JSON Decoding in Go**:
+   - `json.Unmarshal()` decodes JSON into Go structs or maps.
+   - JSON validation using `json.Valid()` helps ensure the correctness of data before parsing.
+
+3. **Handling JSON Data**:
+   - Use `omitempty` in struct tags to exclude empty fields from JSON output.
+   - Use `json:"-"` to ignore fields in JSON encoding.
+   - Decoding into a `map[string]interface{}` allows working with dynamic JSON structures.
+
+Key Takeaways:
+-----------------
+✔ Use `json.MarshalIndent()` for readable JSON output.
+✔ Validate JSON before decoding to prevent errors.
+✔ `map[string]interface{}` is useful for handling unknown JSON structures.
+*/
